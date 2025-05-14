@@ -21,21 +21,18 @@ double* my_solver(int N, double *A, double *B, double *x) {
 
     double *y = (double *)malloc(N * sizeof(double));
     for (int i = 0; i < N; i++) {
-        //  y = Ct * x = Cᵀ * x
+        //  y = Ct * x
         cblas_dgemv(CblasRowMajor, CblasTrans,
                     N, N, 1.0, C, N, x, 1, 0.0, y, 1);
 
-        // x = C * y
+        //  x = C * y
         cblas_dgemv(CblasRowMajor, CblasNoTrans,
                     N, N, 1.0, C, N, y, 1, 0.0, x, 1);
     }
 
     //  y = D * x
     cblas_dgemv(CblasRowMajor, CblasNoTrans,
-                N, N,
-                1.0, D, N,
-                x, 1,
-                0.0, y, 1);
+                N, N, 1.0, D, N, x, 1, 0.0, y, 1);
 
     free(C);
     free(D);

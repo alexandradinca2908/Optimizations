@@ -10,21 +10,14 @@
 double* my_solver(int N, double *A, double *B, double *x) {
     register double suma = 0.0;
 
-    //  Transpose A
-    double *At = malloc(N * N * sizeof(double));
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            At[i * N + j] = A[j * N + i];
-        }
-    }
-
     //  C = B * At
+    //  For sequencial access, we don't transpose A
     double *C = malloc(N * N * sizeof(double));
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             suma = 0.0;
             for (int k = 0; k < N; k++) {
-                suma += B[i * N + k] * At[k * N + j];
+                suma += B[i * N + k] * A[j * N + k];
             }
             C[i * N + j] = suma;
         }
@@ -83,7 +76,6 @@ double* my_solver(int N, double *A, double *B, double *x) {
     //  Free memory
     free(C);
     free(D);
-    free(At);
     free(Ct);
 
     return y;
